@@ -68,7 +68,7 @@ BRANCH_ = Config.U_BRANCH
 async def owo(client, inline_query):
     string_given = inline_query.query.lower()
     if string_given.startswith("not4u"):
-        if not ";" in string_given:
+        if ";" not in string_given:
             return
         ok = string_given.split(" ", maxsplit=1)[1]
         user, msg = ok.split(";")
@@ -194,7 +194,7 @@ async def owo(client, inline_query):
              )
         await client.answer_inline_query(inline_query.id, cache_time=0, results=results)
     elif string_given.startswith("whisper"):
-        if not ";" in string_given:
+        if ";" not in string_given:
             return
         ok = string_given.split(" ", maxsplit=1)[1]
         user, msg = ok.split(";")
@@ -290,9 +290,16 @@ async def st_lang(client, cb):
 @cb_wrapper
 async def change_lang(client, cb):
     nice_text = "Select A Language From Below :"
-    bttns_d = []
-    for lang_ in language_string.keys():
-        bttns_d.append([InlineKeyboardButton(text=LANGUAGES[lang_].title(), callback_data=f"set_lang_{lang_}")])
+    bttns_d = [
+        [
+            InlineKeyboardButton(
+                text=LANGUAGES[lang_].title(),
+                callback_data=f"set_lang_{lang_}",
+            )
+        ]
+        for lang_ in language_string.keys()
+    ]
+
     await cb.edit_message_text(nice_text, reply_markup=InlineKeyboardMarkup(bttns_d))
     
 
@@ -571,7 +578,7 @@ async def wow_nice(client, cb):
     nice = True
     if cb.matches[0].group(1) == "False":
         nice = False
-    if nice is False:
+    if not nice:
         v_t = XTRA_CMD_LIST
         bttn = paginate_help(0, XTRA_CMD_LIST, "helpme", is_official=nice)
     else:
